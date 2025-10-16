@@ -26,18 +26,20 @@ const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
   return vertOut;
 };
 
-const populateGUIFunc = (
+const declareControlsToGUI = (
   gui: GUI,
-  baseUniforms: BaseUniforms,
-  render: () => void
+  _controls: any,
+  onChange: () => void
 ) => {
-  const uniforms = baseUniforms as Uniforms;
-  gui.add(uniforms, "tx", 0, 300).onChange(render);
-  gui.add(uniforms, "ty", 0, 300).onChange(render);
+  const controls = _controls as Uniforms;
+  gui.add(controls, "tx", 0, 300).onChange(onChange);
+  gui.add(controls, "ty", 0, 300).onChange(onChange);
 };
 
 export const example0: ApplicationArgs = [
   vertexShader,
   uniforms,
-  populateGUIFunc,
+  uniforms,
+  declareControlsToGUI,
+  () => {},
 ];

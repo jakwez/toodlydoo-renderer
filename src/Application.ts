@@ -4,26 +4,35 @@ import { createFVerts } from "./createFVerts.js";
 
 export type ApplicationArgs = ConstructorParameters<typeof Application>;
 
-export type PopulateGUIFunc = (
+export type DeclareControlsToGUI = (
   gui: typeof GUI,
-  uniforms: BaseUniforms,
-  renderFunc: () => void
+  controls: any,
+  onChange: () => void
+) => void;
+
+export type ConvertControlsToUniforms = (
+  controls: any,
+  uniforms: BaseUniforms
 ) => void;
 
 export class Application {
   private renderer: Renderer;
   private gui: GUI;
   private uniforms: BaseUniforms;
+  private controls: object;
   private mesh: Array<number>;
   private vertexShader: VertexShader;
 
   constructor(
     vertexShader: VertexShader,
     uniforms: BaseUniforms,
-    populateGUIFunc: PopulateGUIFunc
+    controls: object,
+    declareControlsToUI: DeclareControlsToGUI,
+    convertControlsToUniforms: ConvertControlsToUniforms
   ) {
     this.vertexShader = vertexShader;
     this.uniforms = uniforms;
+    this.controls = controls;
 
     const canvas = document.getElementById(
       "canvas"
@@ -41,8 +50,11 @@ export class Application {
     this.mesh = createFVerts();
 
     this.gui = new GUI();
-    const render = this.render.bind(this);
-    populateGUIFunc(this.gui, this.uniforms, render);
+    const onChange = () => {
+      convertControlsToUniforms(this.controls, this.uniforms);
+      this.render();
+    };
+    declareControlsToUI(this.gui, this.controls, onChange);
   }
 
   render() {

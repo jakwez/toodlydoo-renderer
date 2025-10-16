@@ -6,23 +6,29 @@ import { BaseUniforms, Vec3 } from "./Renderer.js";
 type Uniforms = BaseUniforms & {
   transform: Mat4;
 };
-
 const uniforms: Uniforms = {
   resolutionX: -1,
   resolutionY: -1,
   transform: Mat4.makeIdentity(),
 };
-uniforms.transform.elements[12] = 50; //!!!!!!!!!!
-uniforms.transform.elements[13] = 200;
+
+type Controls = {
+  tx: number;
+  ty: number;
+};
+const controls: Controls = {
+  tx: 0,
+  ty: 0,
+};
 
 const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
   const uniforms = baseUniforms as Uniforms;
   const hw = uniforms.resolutionX / 2;
   const hh = uniforms.resolutionY / 2;
 
-  const tx = uniforms.transform.coefficient(0, 3);
-  const ty = uniforms.transform.coefficient(1, 3);
-  const tz = uniforms.transform.coefficient(2, 3);
+  const tx = uniforms.transform.getElement(0, 3);
+  const ty = uniforms.transform.getElement(1, 3);
+  const tz = uniforms.transform.getElement(2, 3);
   const vertOut: Vec3 = {
     x: (vert.x + tx - hw) / hw,
     y: (-1 * (vert.y + ty - hh)) / hh,
@@ -31,21 +37,29 @@ const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
   return vertOut;
 };
 
-const populateGUIFunc = (
+const declareControlsToGUI = (
   gui: GUI,
-  baseUniforms: BaseUniforms,
-  render: () => void
+  _controls: any,
+  onChange: () => void
 ) => {
-  //   const uniforms = baseUniforms as Uniforms;
-  //   gui.add(uniforms, "tx", 0, 300).onChange(render);
-  //   gui.add(uniforms, "ty", 0, 300).onChange(render);
-  //   gui.add(uniforms, "rotation", radToDegOptions).onChange(render);
-  //   gui.add(uniforms, "scaleX", -5, 5).onChange(render);
-  //   gui.add(uniforms, "scaleY", -5, 5).onChange(render);
+  const controls = _controls as Controls;
+  gui.add(controls, "tx", 0, 300).onChange(onChange);
+  gui.add(controls, "ty", 0, 300).onChange(onChange);
+};
+
+const convertControlsToUniforms = (
+  controls: any,
+  baseUniforms: BaseUniforms
+) => {
+  const uniforms = baseUniforms as Uniforms;
+  uniforms.transform.setElement(0, 3, controls.tx);
+  uniforms.transform.setElement(1, 3, controls.ty);
 };
 
 export const example2: ApplicationArgs = [
   vertexShader,
   uniforms,
-  populateGUIFunc,
+  controls,
+  declareControlsToGUI,
+  convertControlsToUniforms,
 ];

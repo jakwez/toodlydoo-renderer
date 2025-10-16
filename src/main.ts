@@ -15,5 +15,5 @@ for (const name in examples) {
     break;
   }
 }
-const application = new Application(example[0], example[1], example[2]);
+const application = new Application(...example);
 application.render(); // just once, then gui changes trigger it

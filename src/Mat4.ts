@@ -13,7 +13,7 @@ export class Mat4 {
     0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,   0, 0, 0, 0,
   ]
 
-  // Coefficients are named n<i><j> where is it the row number, and j the column number.
+  // Coefficients are named n<i><j> where <i> is the 1-based row number, and <j> the column 1-based number.
   // The constructor takes them in row-major order making the code easier to read, just like in Three.js
   // prettier-ignore
   constructor(
@@ -33,15 +33,19 @@ export class Mat4 {
     let s = "";
     for (let i = 0; i < 4; i++) {
       for (let j = 0; j < 4; j++) {
-        s += this.coefficient(i, j).toFixed(numDigits);
+        s += this.getElement(i, j).toFixed(numDigits);
       }
       s += "\n";
     }
     return s;
   }
 
-  coefficient(zeroBasedRowNum: number, zeroBasedColNum: number) {
+  getElement(zeroBasedRowNum: number, zeroBasedColNum: number): number {
     return this.elements[zeroBasedColNum * 4 + zeroBasedRowNum];
+  }
+
+  setElement(zeroBasedRowNum: number, zeroBasedColNum: number, value: number) {
+    this.elements[zeroBasedColNum * 4 + zeroBasedRowNum] = value;
   }
 
   static makeIdentity(): Mat4 {

@@ -70,21 +70,23 @@ const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
   };
 };
 
-const populateGUIFunc = (
+const declareControlsToGUI = (
   gui: GUI,
-  baseUniforms: BaseUniforms,
-  render: () => void
+  _controls: any,
+  onChange: () => void
 ) => {
-  const uniforms = baseUniforms as Uniforms;
-  gui.add(uniforms, "tx", 0, 300).onChange(render);
-  gui.add(uniforms, "ty", 0, 300).onChange(render);
-  gui.add(uniforms, "rotation", radToDegOptions).onChange(render);
-  gui.add(uniforms, "scaleX", -5, 5).onChange(render);
-  gui.add(uniforms, "scaleY", -5, 5).onChange(render);
+  const controls = _controls as Uniforms; // controls and uniforms are the same here
+  gui.add(controls, "tx", 0, 300).onChange(onChange);
+  gui.add(controls, "ty", 0, 300).onChange(onChange);
+  gui.add(controls, "rotation", radToDegOptions).onChange(onChange);
+  gui.add(controls, "scaleX", -5, 5).onChange(onChange);
+  gui.add(controls, "scaleY", -5, 5).onChange(onChange);
 };
 
 export const example1: ApplicationArgs = [
   vertexShader,
   uniforms,
-  populateGUIFunc,
+  uniforms,
+  declareControlsToGUI,
+  () => {},
 ];
