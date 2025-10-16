@@ -1,11 +1,6 @@
-export type Uniforms = {
+export type BaseUniforms = {
   resolutionX: number;
   resolutionY: number;
-  tx: number;
-  ty: number;
-  rotation: number; // in rad
-  scaleX: number;
-  scaleY: number;
 };
 
 export type Vec3f = {
@@ -14,12 +9,12 @@ export type Vec3f = {
   z: number;
 };
 
-export type VertexShader = (vert: Vec3f, uniforms: Uniforms) => Vec3f;
+export type VertexShader = (vert: Vec3f, uniforms: BaseUniforms) => Vec3f;
 
 export class Renderer {
   constructor(private canvas: HTMLCanvasElement) {}
 
-  render(verts: Array<number>, uniforms: Uniforms, vs: VertexShader) {
+  render(verts: Array<number>, uniforms: BaseUniforms, vs: VertexShader) {
     this.canvas.width = this.canvas.clientWidth;
     this.canvas.height = this.canvas.clientHeight;
 
