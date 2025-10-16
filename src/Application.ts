@@ -2,6 +2,8 @@ import { GUI } from "./GUI.js";
 import { Renderer, BaseUniforms, Vec3f, VertexShader } from "./Renderer.js";
 import { createFVerts } from "./createFVerts.js";
 
+export type ApplicationArgs = ConstructorParameters<typeof Application>;
+
 export type PopulateGUIFunc = (
   gui: typeof GUI,
   uniforms: BaseUniforms,
@@ -41,8 +43,6 @@ export class Application {
     this.gui = new GUI();
     const render = this.render.bind(this);
     populateGUIFunc(this.gui, this.uniforms, render);
-
-    this.render();
   }
 
   render() {
