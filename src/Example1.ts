@@ -1,4 +1,4 @@
-import { Application, ApplicationArgs } from "./Application.js";
+import { ApplicationArgs } from "./Application.js";
 import { GUI, radToDegOptions } from "./GUI.js";
 import { BaseUniforms, Vec3f } from "./Renderer.js";
 

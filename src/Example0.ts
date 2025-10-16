@@ -1,5 +1,5 @@
-import { Application, ApplicationArgs } from "./Application.js";
-import { GUI, radToDegOptions } from "./GUI.js";
+import { ApplicationArgs } from "./Application.js";
+import { GUI } from "./GUI.js";
 import { BaseUniforms, Vec3f } from "./Renderer.js";
 
 type Uniforms = BaseUniforms & {
