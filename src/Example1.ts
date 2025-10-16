@@ -1,6 +1,6 @@
 import { ApplicationArgs } from "./Application.js";
 import { GUI, radToDegOptions } from "./GUI.js";
-import { BaseUniforms, Vec3f } from "./Renderer.js";
+import { BaseUniforms, Vec3 } from "./Renderer.js";
 
 type Uniforms = BaseUniforms & {
   tx: number;
@@ -20,7 +20,7 @@ const uniforms: Uniforms = {
   scaleY: 1,
 };
 
-const vertexShader = (vert: Vec3f, baseUniforms: BaseUniforms) => {
+const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
   const uniforms = baseUniforms as Uniforms;
   // My version of just translation...
   // const hw = uniforms.resolutionX / 2;

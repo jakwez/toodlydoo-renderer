@@ -1,6 +1,6 @@
 import { ApplicationArgs } from "./Application.js";
 import { GUI } from "./GUI.js";
-import { BaseUniforms, Vec3f } from "./Renderer.js";
+import { BaseUniforms, Vec3 } from "./Renderer.js";
 
 type Uniforms = BaseUniforms & {
   tx: number;
@@ -14,11 +14,11 @@ const uniforms: Uniforms = {
   ty: 0,
 };
 
-const vertexShader = (vert: Vec3f, baseUniforms: BaseUniforms) => {
+const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
   const uniforms = baseUniforms as Uniforms;
   const hw = uniforms.resolutionX / 2;
   const hh = uniforms.resolutionY / 2;
-  const vertOut: Vec3f = {
+  const vertOut: Vec3 = {
     x: (vert.x + uniforms.tx - hw) / hw,
     y: (-1 * (vert.y + uniforms.ty - hh)) / hh,
     z: vert.z,

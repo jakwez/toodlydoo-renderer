@@ -1,5 +1,5 @@
 import { GUI } from "./GUI.js";
-import { Renderer, BaseUniforms, Vec3f, VertexShader } from "./Renderer.js";
+import { Renderer, BaseUniforms, Vec3, VertexShader } from "./Renderer.js";
 import { createFVerts } from "./createFVerts.js";
 
 export type ApplicationArgs = ConstructorParameters<typeof Application>;

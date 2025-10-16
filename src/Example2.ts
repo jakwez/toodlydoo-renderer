@@ -1,7 +1,7 @@
 import { ApplicationArgs } from "./Application.js";
 import { GUI, radToDegOptions } from "./GUI.js";
 import { Mat4 } from "./Mat4.js";
-import { BaseUniforms, Vec3f } from "./Renderer.js";
+import { BaseUniforms, Vec3 } from "./Renderer.js";
 
 type Uniforms = BaseUniforms & {
   transform: Mat4;
@@ -15,7 +15,7 @@ const uniforms: Uniforms = {
 uniforms.transform.elements[12] = 50; //!!!!!!!!!!
 uniforms.transform.elements[13] = 200;
 
-const vertexShader = (vert: Vec3f, baseUniforms: BaseUniforms) => {
+const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
   const uniforms = baseUniforms as Uniforms;
   const hw = uniforms.resolutionX / 2;
   const hh = uniforms.resolutionY / 2;
@@ -23,7 +23,7 @@ const vertexShader = (vert: Vec3f, baseUniforms: BaseUniforms) => {
   const tx = uniforms.transform.coefficient(0, 3);
   const ty = uniforms.transform.coefficient(1, 3);
   const tz = uniforms.transform.coefficient(2, 3);
-  const vertOut: Vec3f = {
+  const vertOut: Vec3 = {
     x: (vert.x + tx - hw) / hw,
     y: (-1 * (vert.y + ty - hh)) / hh,
     z: tz,

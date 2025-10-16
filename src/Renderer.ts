@@ -3,13 +3,13 @@ export type BaseUniforms = {
   resolutionY: number;
 };
 
-export type Vec3f = {
+export type Vec3 = {
   x: number;
   y: number;
   z: number;
 };
 
-export type VertexShader = (vert: Vec3f, uniforms: BaseUniforms) => Vec3f;
+export type VertexShader = (vert: Vec3, uniforms: BaseUniforms) => Vec3;
 
 export class Renderer {
   constructor(private canvas: HTMLCanvasElement) {}
@@ -38,21 +38,21 @@ export class Renderer {
     const n = verts.length / numFloatPerTri;
     let i = 0;
     for (let tri = 0; tri < n; tri++) {
-      const v0: Vec3f = {
+      const v0: Vec3 = {
         x: verts[i++],
         y: verts[i++],
         z: verts[i++],
       };
       const v0clip = vs(v0, uniforms);
 
-      const v1: Vec3f = {
+      const v1: Vec3 = {
         x: verts[i++],
         y: verts[i++],
         z: verts[i++],
       };
       const v1clip = vs(v1, uniforms);
 
-      const v2: Vec3f = {
+      const v2: Vec3 = {
         x: verts[i++],
         y: verts[i++],
         z: verts[i++],
@@ -74,7 +74,7 @@ export class Renderer {
     }
   }
 
-  private clipspaceToPixel(v: Vec3f): Vec3f {
+  private clipspaceToPixel(v: Vec3): Vec3 {
     const hw = this.canvas.width / 2;
     const hh = this.canvas.height / 2;
     const vOut = {
