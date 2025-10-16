@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES6",        // modern browsers
+    "module": "ESNext",     // keep import/export as-is
+    "strict": true,         
+    "outDir": "dist",       // compiled JS goes here
+    "rootDir": "src"        
+  },
+  "include": ["src"]
+}
+
