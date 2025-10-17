@@ -1,6 +1,6 @@
 import { ApplicationArgs } from "./Application.js";
 import { GUI, radToDegOptions } from "./GUI.js";
-import { BaseUniforms, Vec3 } from "./Renderer.js";
+import { BaseUniforms, Vec4 } from "./Renderer.js";
 
 type Uniforms = BaseUniforms & {
   tx: number;
@@ -21,7 +21,7 @@ const uniforms: Uniforms = {
 };
 
 // Replicated webgpufundamentals...
-const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
+const vertexShader = (vert: Vec4, baseUniforms: BaseUniforms) => {
   const uniforms = baseUniforms as Uniforms;
 
   // Scale the position
@@ -58,6 +58,7 @@ const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
     x: clipSpaceX,
     y: clipSpaceY,
     z: vert.z,
+    w: 1,
   };
 };
 
