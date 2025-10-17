@@ -20,18 +20,9 @@ const uniforms: Uniforms = {
   scaleY: 1,
 };
 
+// Replicated webgpufundamentals...
 const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
   const uniforms = baseUniforms as Uniforms;
-  // My version of just translation...
-  // const hw = uniforms.resolutionX / 2;
-  // const hh = uniforms.resolutionY / 2;
-  // const vertOut: Vertex = {
-  //   x: (vert.x + uniforms.tx - hw) / hw,
-  //   y: (-1 * (vert.y + uniforms.ty - hh)) / hh,
-  //   z: vert.z,
-  // };
-
-  // Replicated webgpufundamentals...
 
   // Scale the position
   const scaledX = vert.x * uniforms.scaleX;

@@ -15,10 +15,14 @@ const uniforms: Uniforms = {
 type Controls = {
   tx: number;
   ty: number;
+  sx: number;
+  sy: number;
 };
 const controls: Controls = {
   tx: 0,
   ty: 0,
+  sx: 1,
+  sy: 1,
 };
 
 const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
@@ -29,9 +33,13 @@ const vertexShader = (vert: Vec3, baseUniforms: BaseUniforms) => {
   const tx = uniforms.transform.getElement(0, 3);
   const ty = uniforms.transform.getElement(1, 3);
   const tz = uniforms.transform.getElement(2, 3);
+
+  const sx = uniforms.transform.getElement(0, 0);
+  const sy = uniforms.transform.getElement(1, 1);
+  const sz = uniforms.transform.getElement(2, 2);
   const vertOut: Vec3 = {
-    x: (vert.x + tx - hw) / hw,
-    y: (-1 * (vert.y + ty - hh)) / hh,
+    x: (vert.x * sx + tx - hw) / hw,
+    y: (-1 * (vert.y * sy + ty - hh)) / hh,
     z: tz,
   };
   return vertOut;
@@ -45,6 +53,8 @@ const declareControlsToGUI = (
   const controls = _controls as Controls;
   gui.add(controls, "tx", 0, 300).onChange(onChange);
   gui.add(controls, "ty", 0, 300).onChange(onChange);
+  gui.add(controls, "sx", -4, 4).onChange(onChange);
+  gui.add(controls, "sy", -4, 4).onChange(onChange);
 };
 
 const convertControlsToUniforms = (
@@ -52,8 +62,14 @@ const convertControlsToUniforms = (
   baseUniforms: BaseUniforms
 ) => {
   const uniforms = baseUniforms as Uniforms;
-  uniforms.transform.setElement(0, 3, controls.tx);
-  uniforms.transform.setElement(1, 3, controls.ty);
+  const scale = Mat4.makeScale(controls.sx, controls.sy, 1);
+  const translate = Mat4.makeTranslation(controls.tx, controls.ty, 0);
+
+  Mat4.multiply(translate, scale);
+  Mat4.copy(translate, uniforms.transform);
+
+  // const mat = Mat4.multiply2(scale, translate);
+  // Mat4.copy(mat, uniforms.transform);
 };
 
 export const example2: ApplicationArgs = [
