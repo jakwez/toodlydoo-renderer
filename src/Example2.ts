@@ -16,14 +16,28 @@ const uniforms: Uniforms = {
 type Controls = {
   tx: number;
   ty: number;
+  angleDeg: number;
   sx: number;
   sy: number;
 };
 const controls: Controls = {
   tx: 0,
   ty: 0,
+  angleDeg: 0,
   sx: 1,
   sy: 1,
+};
+
+const make2DRotationAroundZ = (angleRad: number): Mat4 => {
+  const c = Math.cos(angleRad);
+  const s = Math.sin(angleRad);
+  // prettier-ignore
+  return new Mat4(
+    c, -s,  0,  0,
+    s,  c,  0,  0,
+    0,  0,  1,  0,
+    0,  0,  0,  1
+  );
 };
 
 const worldToClip = (w: Vec4, halfWidth: number, halfHeight: number): Vec4 => {
@@ -53,6 +67,7 @@ const declareControlsToGUI = (
   const controls = _controls as Controls;
   gui.add(controls, "tx", 0, 300).onChange(onChange);
   gui.add(controls, "ty", 0, 300).onChange(onChange);
+  gui.add(controls, "angleDeg", -360, 360).onChange(onChange);
   gui.add(controls, "sx", -4, 4).onChange(onChange);
   gui.add(controls, "sy", -4, 4).onChange(onChange);
 };
@@ -63,9 +78,11 @@ const convertControlsToUniforms = (
 ) => {
   const uniforms = baseUniforms as Uniforms;
   const scale = Mat4.makeScale(controls.sx, controls.sy, 1);
+  const rotate = make2DRotationAroundZ((controls.angleDeg / 180) * Math.PI);
   const translate = Mat4.makeTranslation(controls.tx, controls.ty, 0);
-  const mat = Mat4.multiply(translate, scale);
-  Mat4.copy(mat, uniforms.transform);
+  const mat = Mat4.multiply(rotate, scale);
+  const mat2 = Mat4.multiply(translate, mat);
+  Mat4.copy(mat2, uniforms.transform);
 };
 
 export const example2: ApplicationArgs = [
