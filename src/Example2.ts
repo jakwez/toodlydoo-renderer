@@ -26,24 +26,22 @@ const controls: Controls = {
   sy: 1,
 };
 
+const worldToClip = (w: Vec4, halfWidth: number, halfHeight: number): Vec4 => {
+  const vertOut = new Vec4(
+    (w.x - halfWidth) / halfWidth,
+    (-1 * (w.y - halfHeight)) / halfHeight,
+    w.z,
+    w.w
+  );
+  return vertOut;
+};
+
 const vertexShader = (vert: Vec4, baseUniforms: BaseUniforms): Vec4 => {
   const uniforms = baseUniforms as Uniforms;
   const hw = uniforms.resolutionX / 2;
   const hh = uniforms.resolutionY / 2;
-
-  const tx = uniforms.transform.getElement(0, 3);
-  const ty = uniforms.transform.getElement(1, 3);
-  const tz = uniforms.transform.getElement(2, 3);
-
-  const sx = uniforms.transform.getElement(0, 0);
-  const sy = uniforms.transform.getElement(1, 1);
-  const sz = uniforms.transform.getElement(2, 2);
-  const vertOut = new Vec4(
-    (vert.x * sx + tx - hw) / hw,
-    (-1 * (vert.y * sy + ty - hh)) / hh,
-    tz,
-    1
-  );
+  const v = Vec4.multiply(uniforms.transform, vert);
+  const vertOut = worldToClip(v, hw, hh);
   return vertOut;
 };
 
@@ -66,12 +64,8 @@ const convertControlsToUniforms = (
   const uniforms = baseUniforms as Uniforms;
   const scale = Mat4.makeScale(controls.sx, controls.sy, 1);
   const translate = Mat4.makeTranslation(controls.tx, controls.ty, 0);
-
-  Mat4.multiply(translate, scale);
-  Mat4.copy(translate, uniforms.transform);
-
-  // const mat = Mat4.multiply2(scale, translate);
-  // Mat4.copy(mat, uniforms.transform);
+  const mat = Mat4.multiply(translate, scale);
+  Mat4.copy(mat, uniforms.transform);
 };
 
 export const example2: ApplicationArgs = [
