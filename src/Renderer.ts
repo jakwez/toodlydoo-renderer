@@ -1,13 +1,8 @@
+import { Vec4 } from "./Vec4.js";
+
 export type BaseUniforms = {
   resolutionX: number;
   resolutionY: number;
-};
-
-export type Vec4 = {
-  x: number;
-  y: number;
-  z: number;
-  w: number;
 };
 
 export type VertexShader = (vert: Vec4, uniforms: BaseUniforms) => Vec4;
@@ -39,28 +34,13 @@ export class Renderer {
     const n = verts.length / numFloatPerTri;
     let i = 0;
     for (let tri = 0; tri < n; tri++) {
-      const v0: Vec4 = {
-        x: verts[i++],
-        y: verts[i++],
-        z: verts[i++],
-        w: 1,
-      };
+      const v0 = new Vec4(verts[i++], verts[i++], verts[i++], 1);
       const v0clip = vs(v0, uniforms);
 
-      const v1: Vec4 = {
-        x: verts[i++],
-        y: verts[i++],
-        z: verts[i++],
-        w: 1,
-      };
+      const v1 = new Vec4(verts[i++], verts[i++], verts[i++], 1);
       const v1clip = vs(v1, uniforms);
 
-      const v2: Vec4 = {
-        x: verts[i++],
-        y: verts[i++],
-        z: verts[i++],
-        w: 1,
-      };
+      const v2 = new Vec4(verts[i++], verts[i++], verts[i++], 1);
       const v2clip = vs(v2, uniforms);
 
       context.beginPath();
@@ -81,12 +61,7 @@ export class Renderer {
   private clipspaceToPixel(v: Vec4): Vec4 {
     const hw = this.canvas.width / 2;
     const hh = this.canvas.height / 2;
-    const vOut = {
-      x: hw + v.x * hw,
-      y: hh - v.y * hh,
-      z: v.z,
-      w: 1,
-    };
+    const vOut = new Vec4(hw + v.x * hw, hh - v.y * hh, v.z, 1);
     return vOut;
   }
 }

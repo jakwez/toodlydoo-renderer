@@ -1,7 +1,8 @@
 import { ApplicationArgs } from "./Application.js";
 import { GUI, radToDegOptions } from "./GUI.js";
 import { Mat4 } from "./Mat4.js";
-import { BaseUniforms, Vec4 } from "./Renderer.js";
+import { BaseUniforms } from "./Renderer.js";
+import { Vec4 } from "./Vec4.js";
 
 type Uniforms = BaseUniforms & {
   transform: Mat4;
@@ -25,7 +26,7 @@ const controls: Controls = {
   sy: 1,
 };
 
-const vertexShader = (vert: Vec4, baseUniforms: BaseUniforms) => {
+const vertexShader = (vert: Vec4, baseUniforms: BaseUniforms): Vec4 => {
   const uniforms = baseUniforms as Uniforms;
   const hw = uniforms.resolutionX / 2;
   const hh = uniforms.resolutionY / 2;
@@ -37,12 +38,12 @@ const vertexShader = (vert: Vec4, baseUniforms: BaseUniforms) => {
   const sx = uniforms.transform.getElement(0, 0);
   const sy = uniforms.transform.getElement(1, 1);
   const sz = uniforms.transform.getElement(2, 2);
-  const vertOut: Vec4 = {
-    x: (vert.x * sx + tx - hw) / hw,
-    y: (-1 * (vert.y * sy + ty - hh)) / hh,
-    z: tz,
-    w: 1,
-  };
+  const vertOut = new Vec4(
+    (vert.x * sx + tx - hw) / hw,
+    (-1 * (vert.y * sy + ty - hh)) / hh,
+    tz,
+    1
+  );
   return vertOut;
 };
 

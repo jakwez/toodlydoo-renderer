@@ -1,6 +1,7 @@
 import { ApplicationArgs } from "./Application.js";
 import { GUI } from "./GUI.js";
-import { BaseUniforms, Vec4 } from "./Renderer.js";
+import { BaseUniforms } from "./Renderer.js";
+import { Vec4 } from "./Vec4.js";
 
 type Uniforms = BaseUniforms & {
   tx: number;
@@ -14,16 +15,16 @@ const uniforms: Uniforms = {
   ty: 0,
 };
 
-const vertexShader = (vert: Vec4, baseUniforms: BaseUniforms) => {
+const vertexShader = (vert: Vec4, baseUniforms: BaseUniforms): Vec4 => {
   const uniforms = baseUniforms as Uniforms;
   const hw = uniforms.resolutionX / 2;
   const hh = uniforms.resolutionY / 2;
-  const vertOut: Vec4 = {
-    x: (vert.x + uniforms.tx - hw) / hw,
-    y: (-1 * (vert.y + uniforms.ty - hh)) / hh,
-    z: vert.z,
-    w: 1,
-  };
+  const vertOut = new Vec4(
+    (vert.x + uniforms.tx - hw) / hw,
+    (-1 * (vert.y + uniforms.ty - hh)) / hh,
+    vert.z,
+    1
+  );
   return vertOut;
 };
 
